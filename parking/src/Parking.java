@@ -1,104 +1,72 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Parking extends JFrame {
-    public JButton butt;
-    public JButton butt1;
-    public JButton butt2;
-    public JButton butt3;
-    public JTextField text;
-    public ArrayList<Integer> parking;
-    public Parking() {
-        super("Parking");
-        setBounds(0, 0, 800, 600);
-        setResizable(false);
-        repaint();
-        butt3 = new JButton ("OK");
-        butt3.setBackground(Color.RED);
-        butt3.setForeground(Color.BLACK);
-        butt = new JButton ("OK");
-        butt.setBackground(Color.RED);
-        butt.setForeground(Color.BLACK);
-        butt1 = new JButton ("OK");
-        butt1.setBackground(Color.RED);
-        butt1.setForeground(Color.BLACK);
-        butt2 = new JButton ("EXIT");
-        butt2.setBackground(Color.RED);
-        butt2.setForeground(Color.BLACK);
-        text =new JTextField();
-        butt.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                JOptionPane.showMessageDialog(butt1, "Введите кол-во мест!","Information",JOptionPane.INFORMATION_MESSAGE);
-                for (int i = 0; i < text.getText().length(); i++) {
-                    parking.add(1);
-                }
-                JOptionPane.showMessageDialog(butt1, ,"Information",JOptionPane.INFORMATION_MESSAGE);
-
-            }
-        });
-        butt1.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                JOptionPane.showMessageDialog(butt1, "PLANE KEYS:\nMOVEUP-↑!\nMOVEDOWN-↓\nATTACK-ENTER\n----------------------\nTANK KEYS:\nMOVEUP-W\nMOVEDOWN-S\nATTACK-H\n----------------------\nPAUSE-P\nTURN PAUSE-SPACE","Information",JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
-        butt2.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                dispose();
-            }
-        });
-        butt3.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                remove(parking, text.getText().length());
-                dispose();
-            }
-        });
-        Container cont = getContentPane();
-        cont.setLayout(new GridBagLayout());
-        cont.add(text,new GridBagConstraints(0, 0, 0, 0, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(50, 0, 200, 0), 250, 20));
-        cont.add(butt,new GridBagConstraints(0, 0, 0, 0, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(100, 0, 200, 0), 250, 20));
-        cont.add(butt1,new GridBagConstraints(0, 0, 0, 0, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(400, 0, 200, 0), 250, 20));
-        cont.add(butt2,new GridBagConstraints(0, 0, 0, 0, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(550, 0, 200, 0), 250, 20));
-        cont.add(butt3,new GridBagConstraints(0, 0, 0, 0, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(250, 0, 200, 0), 250, 20));
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+public class Parking {
+    private  static void chek(ArrayList<Integer> parking) {
+          for(int i=0;i<parking.size();i++){
+              if(parking.get(i)==0){
+                  System.out.println("Место "+(i+1)+" свободно!");
+              }else System.out.println("Место "+(i+1)+ " занято!");
+          }
     }
-        private static void chek (ArrayList < Integer > parking) {
-            for (int i = 0; i < parking.size(); i++) {
-                if (parking.get(i) == 0) {
-                    System.out.println("Место " + (i + 1) + " свободно!");
-                } else System.out.println("Место " + (i + 1) + " занято!");
+    private  static void remove(ArrayList<Integer> parking,int number) {
+            try {
+                if ((parking.get(number-1) != 0)) {
+                   parking.set(number-1,0);
+                    System.out.println("Место освободилось!");
+                } else
+                    System.out.println("Место свободно!");
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Такого номера парковки нет!");
             }
         }
-
-    private static void remove(ArrayList<Integer> parking, int number) {
-
-        try {
-            if ((parking.get(number - 1) != 0)) {
-                parking.set(number - 1, 0);
-                System.out.println("Место освободилось!");
-            } else
-                System.out.println("Место свободно!");
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Такого номера парковки нет!");
-        }
-    }
-
-    private static void add(ArrayList<Integer> parking) {
-        for (int i = 0; i < parking.size(); i++) {
-            if (parking.get(i) == 0) {
-                System.out.println("Место " + (i + 1) + " свободно!");
-                parking.set(i, 1);
+    private  static void add(ArrayList<Integer> parking) {
+        for(int i=0;i<parking.size();i++){
+            if(parking.get(i)==0){
+                System.out.println("Место "+(i+1)+" свободно!");
+                parking.set(i,1);
                 System.out.println("Парковка завершена!!!");
                 break;
-            } else System.out.println("Место " + (i + 1) + " занято!");
+            }else System.out.println("Место "+(i+1)+ " занято!");
         }
     }
 
     public static void main(String[] args) {
-        Parking park = new Parking();
-        park.setVisible(true);
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Введите кол-во мест стоянки:");
+        int park = sc.nextInt();
+        ArrayList<Integer> parking= new ArrayList<>();
+        for(int i=0;i<park;i++){
+            parking.add(0);
+        }
+        while (true) {
+            System.out.println("-------------------------------------------");
+            System.out.println("Функции:");
+            System.out.println("1 - Проверка парковочных мест.");
+            System.out.println("2 - Выезд машины из парковочного места.");
+            System.out.println("3 - Въезд машины на парковочное место.");
+            System.out.println("4 - Закрыть программу.");
+            System.out.println("-------------------------------------------");
+            String answer = sc.next();
+            int answ = Integer.parseInt(answer);
+            switch (answ) {
+                case 1:
+                    chek(parking);
+                    break;
+                case 2:
+                    System.out.println("Введите место!");
+                    int number = sc.nextInt();
+                     remove(parking,number);
+                    break;
+                case 3:
+                    add(parking);
+                    break;
+                case 4:
+                    return;
+                default:
+                    System.out.println("Unknown command");
+                    break;
+            }
+        }
     }
 }
